@@ -35,7 +35,6 @@ fn replace_number_literals_s(data: &Vec<String>) -> Vec<String> {
 }
 
 fn main() {
-
     let d = advent_of_code::Reader::read_file("./input/day1_2.txt").unwrap();
     let sum = day1_2(&d);
     println!("result: {sum}");
@@ -43,10 +42,10 @@ fn main() {
 
 #[cfg(test)]
 mod tests {
-    use crate::day1_2;
+    use crate::{advent_of_code, day1_2};
 
     #[test]
-    fn d2() {
+    fn day2_ind() {
         let result = day1_2(&vec!["two1nine".to_string()]);
         assert_eq!(result, 29);
         let result = day1_2(&vec!["eightwothree".to_string()]);
@@ -62,5 +61,17 @@ mod tests {
         let result = day1_2(&vec!["7pqrstsixteen".to_string()]);
         assert_eq!(result, 76);
     }
+    #[test]
+    fn day2_res() {
+        let d = advent_of_code::Reader::read_file("./input/day1_2_test.txt").unwrap();
+        let result = day1_2(&d);
+        assert_eq!(result, 281);
+    }
 
+    #[test]
+    fn day2_final() {
+        let d = advent_of_code::Reader::read_file("./input/day1_2.txt").unwrap();
+        let result = day1_2(&d);
+        assert_eq!(result, 53539);
+    }
 }
