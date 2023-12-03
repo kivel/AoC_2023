@@ -80,8 +80,6 @@ fn main() {
             .unwrap()
             .trim()
             .split(';')
-            .collect::<Vec<&str>>()
-            .iter()
             .map(|g| Record::from_string(g))
             .collect::<Vec<Record>>();
         if draws.iter().all(|d| *d <= bag) {
