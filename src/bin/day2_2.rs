@@ -75,17 +75,12 @@ fn main() {
             green: 0,
             blue: 0,
         };
-        let draws = l
-            .last()
+        l.last()
             .unwrap()
             .trim()
             .split(';')
-            .collect::<Vec<&str>>()
-            .iter()
             .map(|g| Record::from_string(g))
-            .collect::<Vec<Record>>();
-        draws.iter().for_each(|d| d.max_counts(&mut max_cubes));
-        sum += max_cubes.product();
+            .for_each(|d| d.max_counts(&mut max_cubes));
     }
     println!("result: {sum}");
 }
