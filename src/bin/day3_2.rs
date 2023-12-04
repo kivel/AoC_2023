@@ -123,10 +123,10 @@ mod tests {
         assert_eq!(result, 467835);
     }
 
-    // #[test]
-    // fn day3_final() {
-    //     let d = advent_of_code::Reader::read_file("./input/day3_1.txt").unwrap();
-    //     let result = day3_1(&d);
-    //     assert_eq!(result, 531561);
-    // }
+    #[test]
+    fn day3_final() {
+        let d = advent_of_code::Reader::read_file("./input/day3_1.txt").unwrap();
+        let result = day3_2(&d);
+        assert_eq!(result, 83279367);
+    }
 }
