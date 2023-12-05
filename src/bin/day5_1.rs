@@ -1,11 +1,13 @@
 use rayon::prelude::*;
 use std::collections::HashMap;
+use std::ops::Range;
+
 #[path = "../advent_of_code/mod.rs"]
 mod advent_of_code;
 
 #[derive(Debug, Clone)]
 struct Map {
-    lookup: HashMap<usize, usize>,
+    lookup: HashMap<Range<usize>, Range<usize>>,
 }
 
 impl Map {
@@ -16,15 +18,31 @@ impl Map {
     }
 
     fn push(&mut self, map: Vec<usize>) {
-        for (i, d) in (map[0]..(map[0] + map[2])).enumerate() {
-            self.lookup.insert(map[1] + i, d);
-        }
+        let dst_start = map[0];
+        let src_start = map[1];
+        let range = map[2];
+        let dst = dst_start..dst_start + range;
+        let src = src_start..src_start + range;
+        self.lookup.insert(src, dst);
     }
 
     fn get(&self, key: usize) -> usize {
-        match self.lookup.get(&key) {
-            Some(value) => *value,
-            None => key,
+        let starts = self
+            .lookup
+            .iter()
+            .filter_map(|(src, dst)| {
+                if src.contains(&key) {
+                    Some((dst.start, src.start))
+                } else {
+                    None
+                }
+            })
+            .collect::<Vec<(usize, usize)>>();
+
+        if let Some((dst_start, src_start)) = starts.first() {
+            key - *src_start + *dst_start
+        } else {
+            key
         }
     }
 }
@@ -137,8 +155,8 @@ mod tests {
     #[test]
     fn day5_res() {
         let d = advent_of_code::Reader::read_file("./input/day5_1_test.txt").unwrap();
-
         let result = day5_1(&d);
+        println!("result: {result}");
         assert_eq!(result, 35);
     }
 
@@ -146,6 +164,6 @@ mod tests {
     fn day5_final() {
         let d = advent_of_code::Reader::read_file("./input/day5_1.txt").unwrap();
         let result = day5_1(&d);
-        assert_eq!(result, 8736438);
+        assert_eq!(result, 484023871);
     }
 }
