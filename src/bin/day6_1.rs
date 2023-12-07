@@ -83,6 +83,15 @@ mod tests {
     }
 
     #[test]
+    fn test_res_2() {
+        // Time:      71530
+        // Distance:  940200
+        let d: Vec<(isize, isize)> = vec![(71530, 940200)];
+        let result = day6_1(&d);
+        println!("result: {result}");
+        assert_eq!(result, 71503);
+    }
+    #[test]
     fn iteration() {
         // iterates over the data, terrible time complexity
         let input: Vec<(isize, isize)> = vec![(44, 283), (70, 1134), (70, 1134), (80, 1491)];
@@ -114,5 +123,12 @@ mod tests {
         let input: Vec<(isize, isize)> = vec![(44, 283), (70, 1134), (70, 1134), (80, 1491)];
         let result = day6_1(&input);
         assert_eq!(result, 219849);
+    }
+
+    #[test]
+    fn test_final_2() {
+        let input: Vec<(isize, isize)> = vec![(44707080, 283113411341491)];
+        let result = day6_1(&input);
+        assert_eq!(result, 29432455);
     }
 }
