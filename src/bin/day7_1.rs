@@ -10,10 +10,15 @@ struct Hand {
     cards: Vec<Card>,
     card_map: HashMap<Card, usize>,
     hand_type: HandType,
+    bet: usize,
 }
 
 impl Hand {
     fn from_string(s: &str) -> Hand {
+        let mut input = s.split_whitespace();
+        let s = input.next().unwrap();
+        let bet = input.next().unwrap().parse::<usize>().unwrap();
+
         let mut cards = Vec::new();
         let mut card_map = HashMap::new();
         for c in s.chars() {
@@ -29,6 +34,7 @@ impl Hand {
             cards,
             card_map,
             hand_type,
+            bet,
         }
     }
 }
@@ -136,34 +142,7 @@ fn day7_1(data: &Vec<String>) -> usize {
 }
 
 fn main() {
-    let hand1 = "KK677".to_owned();
-    let hand2 = "KK676".to_owned();
-    let Ace = Card::A;
-    let King = Card::K;
-    let Queen = Card::Q;
-
-    println!("{}", HandType::FiveOfAKind > HandType::FourOfAKind);
-
-    let handA = Hand::from_string(hand1.as_str());
-    if handA.card_map.values().any(|v| *v == 2usize) {
-        println!("TWO OF A K?IND: {:?}", handA.card_map);
-    }
-    println!(
-        "cards: {:?}, map: {:?},  type: {:?}",
-        handA.cards, handA.card_map, handA.hand_type
-    );
-    let handB = Hand::from_string(hand2.as_str());
-    println!("hand1 == hand2 --> {}", handA == handB);
-    println!("hand1 >= hand2 --> {}", handA == handB);
-    println!("hand1 <= hand2 --> {}", handA == handB);
-    let mut hands = vec![handB, handA];
-    println!("before hands: {:?}", hands);
-    hands.sort();
-    println!("after hands: {:?}", hands);
-    // let d = advent_of_code::Reader::read_file("./input/day7_1.txt").unwrap();
-    //
-    // let sum = day7_1(&d);
-    // println!("result: {sum}");
+    todo!()
 }
 
 #[cfg(test)]
@@ -172,37 +151,26 @@ mod tests {
 
     #[test]
     fn day5_res() {
-        // let d = advent_of_code::Reader::read_file("./input/day7_1_test.txt").unwrap();
-        let hand1 = Hand::from_string("32T3K");
-        let hand2 = Hand::from_string("T55J5");
-        let hand3 = Hand::from_string("KK677");
-        let hand4 = Hand::from_string("KTJJT");
-        let hand5 = Hand::from_string("QQQJA");
+        let hand1 = Hand::from_string("32T3K 765");
+        let hand2 = Hand::from_string("T55J5 684");
+        let hand3 = Hand::from_string("KK677 28");
+        let hand4 = Hand::from_string("KTJJT 220");
+        let hand5 = Hand::from_string("QQQJA 483");
 
         let mut hands = vec![hand1, hand2, hand3, hand4, hand5];
 
-        for (index, hand) in hands.iter().enumerate() {
-            println!("Hand {}: {:?}", index + 1, hand.cards);
-        }
-
-        println!("sorted");
         hands.sort();
 
-        let expected = vec!["32T3K", "KTJJT", "KK677", "T55J5", "QQQJA"];
+        let mut result = 0;
+        let expected = vec!["32T3K 0", "KTJJT 0", "KK677 0", "T55J5 0", "QQQJA 0"];
         for (index, hand) in hands.iter().enumerate() {
-            println!(
-                "Hand {}: expected {:?} -> {:?}",
-                index + 1,
-                expected[index],
-                hand.cards
-            );
+            result += hand.bet * (index + 1);
+            assert_eq!(Hand::from_string(expected[index]), *hand);
+            println!("Hand {}: bet: {}, result: {}", index + 1, hand.bet, result);
         }
 
-        // 32T3K -> KTJJT -> KK677 -> T55J5 --> QQQJA
-
-        // let result = day7_1(&d);
-        // println!("result: {result}");
-        // assert_eq!(result, 35);
+        println!("result: {result}");
+        assert_eq!(result, 6440);
     }
 
     #[test]
