@@ -1,6 +1,4 @@
-use rayon::prelude::*;
 use std::collections::HashMap;
-use std::ops::Range;
 
 #[path = "../advent_of_code/mod.rs"]
 mod advent_of_code;
@@ -138,11 +136,19 @@ impl Card {
     }
 }
 fn day7_1(data: &Vec<String>) -> usize {
-    todo!()
+    let mut hands: Vec<Hand> = data.iter().map(|h| Hand::from_string(h)).collect();
+    hands.sort();
+    hands
+        .iter()
+        .enumerate()
+        .map(|(i, h)| (i + 1) * h.bet)
+        .sum::<usize>()
 }
 
 fn main() {
-    todo!()
+    let d = advent_of_code::Reader::read_file("./input/day7_1.txt").unwrap();
+    let result = day7_1(&d);
+    println!("{result}");
 }
 
 #[cfg(test)]
@@ -177,6 +183,6 @@ mod tests {
     fn day5_final() {
         let d = advent_of_code::Reader::read_file("./input/day7_1.txt").unwrap();
         let result = day7_1(&d);
-        assert_eq!(result, 484023871);
+        assert_eq!(result, 251121738);
     }
 }
