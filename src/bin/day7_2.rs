@@ -50,7 +50,6 @@ impl Hand {
                 HandType::ThreeOfAKind => self.hand_type = HandType::FourOfAKind,
                 HandType::FourOfAKind => self.hand_type = HandType::FiveOfAKind,
                 HandType::TwoPair => self.hand_type = HandType::ThreeOfAKind,
-                HandType::FullHouse => self.hand_type = HandType::FourOfAKind,
                 _ => {}
             }
         }
@@ -202,7 +201,7 @@ fn main() {
 
 #[cfg(test)]
 mod tests {
-    use crate::{advent_of_code, day7_2, Hand, HandType};
+    use crate::{advent_of_code, day7_2, Hand};
 
     #[test]
     fn day5_res() {
@@ -221,7 +220,12 @@ mod tests {
         let mut result = 0;
         for (index, hand) in hands.iter().enumerate() {
             result += hand.bet * (index + 1);
-            println!("Hand {}: bet: {}, result: {}", index + 1, hand.bet, result);
+            println!(
+                "Hand {}: bet: {}, hand: {:?}",
+                index + 1,
+                hand.bet,
+                hand.hand_type
+            );
         }
 
         println!("result: {result}");
@@ -234,10 +238,11 @@ mod tests {
         let result = day7_2(&d);
         assert_eq!(result, 5905);
     }
-    // #[test]
-    // fn day5_final() {
-    //     let d = advent_of_code::Reader::read_file("./input/day7_1.txt").unwrap();
-    //     let result = day7_2(&d);
-    //     assert_eq!(result, 251121738);
-    // }
+    #[test]
+    fn day5_final() {
+        let d = advent_of_code::Reader::read_file("./input/day7_1.txt").unwrap();
+        let result = day7_2(&d);
+        // 251337575 is too low
+        assert!(result > 251337575);
+    }
 }
