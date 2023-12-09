@@ -23,3 +23,23 @@ impl Reader {
         Ok(org_data)
     }
 }
+
+pub struct RingBuffer<T> {
+    buffer: Vec<T>,
+    current_index: usize,
+}
+
+impl<T: Clone> RingBuffer<T> {
+    pub fn new(items: Vec<T>) -> Self {
+        RingBuffer {
+            buffer: items,
+            current_index: 0,
+        }
+    }
+
+    pub fn next(&mut self) -> T {
+        let item = self.buffer[self.current_index].clone();
+        self.current_index = (self.current_index + 1) % self.buffer.len();
+        item
+    }
+}
