@@ -59,7 +59,7 @@ mod tests {
     use crate::{advent_of_code, day9_1};
 
     #[test]
-    fn day8_res() {
+    fn day9_test() {
         let d = advent_of_code::Reader::read_file("./input/day9_1_test.txt").unwrap();
         let result = day9_1(&d);
         println!("result: {result}");
@@ -67,7 +67,7 @@ mod tests {
     }
 
     #[test]
-    fn day8_final() {
+    fn day9_final() {
         let d = advent_of_code::Reader::read_file("./input/day9_1.txt").unwrap();
         let result = day9_1(&d);
         assert_eq!(result, 1647269739);
