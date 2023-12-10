@@ -45,37 +45,44 @@ impl Hand {
         let n = self.card_map.get(&Card::J).unwrap();
         if *n == 1 {
             match self.hand_type {
+                // JXYZA -> XXYZA => OnePair
                 HandType::HighCard => self.hand_type = HandType::OnePair,
+                // JXXYZ -> XXXYZ => ThreeOfAKind
                 HandType::OnePair => self.hand_type = HandType::ThreeOfAKind,
+                // JXXXY -> XXXXY => FourOfAKind
                 HandType::ThreeOfAKind => self.hand_type = HandType::FourOfAKind,
+                // JXXXX -> XXXXX => FiveOfAKind
                 HandType::FourOfAKind => self.hand_type = HandType::FiveOfAKind,
-                HandType::TwoPair => self.hand_type = HandType::ThreeOfAKind,
+                // JXXYY -> XXXYY => FullHouse
+                HandType::TwoPair => self.hand_type = HandType::FullHouse,
                 _ => {}
             }
         }
         if *n == 2 {
             match self.hand_type {
-                // Can't be HighCard, if we have 2 jokers
-                // HandType::HighCard => self.hand_type = HandType::ThreeOfAKind,
+                // Can't be HighCard, if we have OnePair<J>
+                // JJXYZ -> XXXYZ => ThreeOfAKind
                 HandType::OnePair => self.hand_type = HandType::ThreeOfAKind,
                 // ThreeOfAKind is impossible with OnePair<J>, that would be FullHouse
-                // HandType::ThreeOfAKind => self.hand_type = HandType::FourOfAKind,
                 // Impossible to have FourOfAKind with OnePair<J>, that would be 6 cards
-                // HandType::FourOfAKind => self.hand_type = HandType::FiveOfAKind,
+                // JJXXY -> XXXXY => FourOfAKind
                 HandType::TwoPair => self.hand_type = HandType::FourOfAKind,
+                // JJXXX -> XXXXX => FiveOfAKind
                 HandType::FullHouse => self.hand_type = HandType::FiveOfAKind,
                 _ => {}
             }
         }
         if *n == 3 {
             match self.hand_type {
-                // can't be FullHouse, so we boost to FourOfAKind
+                /// JJJXY -> XXXXY => FourOfAKind
                 HandType::ThreeOfAKind => self.hand_type = HandType::FourOfAKind,
+                /// JJJXX -> XXXXX => FiveOfAKind
                 HandType::FullHouse => self.hand_type = HandType::FiveOfAKind,
                 _ => {}
             }
         }
         if *n == 4 {
+            // JJJJX -> XXXXX => FiveOfAKind
             self.hand_type = HandType::FiveOfAKind
         }
     }
@@ -243,6 +250,6 @@ mod tests {
         let d = advent_of_code::Reader::read_file("./input/day7_1.txt").unwrap();
         let result = day7_2(&d);
         // 251337575 is too low
-        assert!(result > 251337575);
+        assert_eq!(result, 251421071);
     }
 }
