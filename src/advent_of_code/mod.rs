@@ -24,11 +24,13 @@ impl Reader {
     }
 }
 
+#[allow(dead_code)]
 pub struct RingBuffer<T> {
     buffer: Vec<T>,
     current_index: usize,
 }
 
+#[allow(dead_code)]
 impl<T: Clone> RingBuffer<T> {
     pub fn new(items: Vec<T>) -> Self {
         RingBuffer {

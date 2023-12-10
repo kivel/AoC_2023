@@ -74,9 +74,9 @@ impl Hand {
         }
         if *n == 3 {
             match self.hand_type {
-                /// JJJXY -> XXXXY => FourOfAKind
+                // JJJXY -> XXXXY => FourOfAKind
                 HandType::ThreeOfAKind => self.hand_type = HandType::FourOfAKind,
-                /// JJJXX -> XXXXX => FiveOfAKind
+                // JJJXX -> XXXXX => FiveOfAKind
                 HandType::FullHouse => self.hand_type = HandType::FiveOfAKind,
                 _ => {}
             }
