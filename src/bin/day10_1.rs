@@ -368,21 +368,13 @@ mod tests {
 
         let mut path: Vec<Tile> = vec![start_tile, connections[1]];
 
-        let next_tile = &path.iter().last().unwrap().get_next_tile(&grid).unwrap();
-        path.push(next_tile.clone());
-        // println!("{next_tile:?}");
-        let next_tile = &path.iter().last().unwrap().get_next_tile(&grid).unwrap();
-        path.push(*next_tile);
-        let next_tile = &path.iter().last().unwrap().get_next_tile(&grid).unwrap();
-        path.push(*next_tile);
-        let next_tile = &path.iter().last().unwrap().get_next_tile(&grid).unwrap();
-        path.push(*next_tile);
-        let next_tile = &path.iter().last().unwrap().get_next_tile(&grid).unwrap();
-        path.push(*next_tile);
-        let next_tile = &path.iter().last().unwrap().get_next_tile(&grid).unwrap();
-        path.push(*next_tile);
-        let next_tile = &path.iter().last().unwrap().get_next_tile(&grid).unwrap();
-        path.push(*next_tile);
+        loop {
+            let next_tile = &path.iter().last().unwrap().get_next_tile(&grid).unwrap();
+            match next_tile.item {
+                'S' => break,
+                _ => path.push(*next_tile),
+            }
+        }
         for t in &path {
             println!("{t:?}");
         }
