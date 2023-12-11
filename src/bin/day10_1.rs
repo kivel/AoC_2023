@@ -6,11 +6,19 @@ fn day10_1(data: &Vec<String>) -> i32 {
     todo!()
 }
 
-#[derive(Copy, Clone, Debug, Eq, PartialEq, Hash)]
+#[derive(Copy, Clone, Debug, Hash)]
 struct Point {
     row: usize,
     col: usize,
 }
+
+impl PartialEq for Point {
+    fn eq(&self, other: &Self) -> bool {
+        self.row == other.row && self.col == other.col
+    }
+}
+
+impl Eq for Point {}
 impl Add for Point {
     type Output = Self;
 
@@ -90,6 +98,11 @@ impl Tile {
         match grid[check.row][check.col] {
             '|' => connections.push(Tile {
                 item: '|',
+                position: check,
+                origin: start_tile.position,
+            }),
+            '7' => connections.push(Tile {
+                item: '7',
                 position: check,
                 origin: start_tile.position,
             }),
@@ -204,14 +217,60 @@ impl Tile {
                 }
                 return Some(Tile::from_points(self.position, p, grid));
             }
+            'F' => {
+                if self.origin.row > self.position.row {
+                    p.col += 1;
+                }
+                if self.origin.col > self.position.col {
+                    p.row += 1;
+                }
+                return Some(Tile::from_points(self.position, p, grid));
+            }
             _ => None,
         }
     }
 }
 fn main() {
     let d = advent_of_code::Reader::read_file("./input/day10_1.txt").unwrap();
-    let result = day10_1(&d);
-    println!("{result}");
+
+    let grid = d
+        .iter()
+        .map(|line| line.chars().collect::<Vec<char>>())
+        .collect::<Vec<Vec<char>>>();
+
+    let start_tile = Tile::find_start_tile(&grid);
+    println!("{start_tile:?}");
+    let connections = start_tile.get_start_connections(&grid, &start_tile);
+    println!("{connections:?}");
+    assert_eq!(connections.len(), 2);
+
+    let mut path1: Vec<Tile> = vec![start_tile, connections[0]];
+    let mut path2: Vec<Tile> = vec![start_tile, connections[1]];
+
+    loop {
+        let next_tile1 = &path1.iter().last().unwrap().get_next_tile(&grid).unwrap();
+        println!("{next_tile1:?}");
+        let next_tile2 = &path2.iter().last().unwrap().get_next_tile(&grid).unwrap();
+        println!("{next_tile2:?}");
+        match next_tile1.position == next_tile2.position {
+            true => break,
+            false => {
+                path1.push(*next_tile1);
+                path2.push(*next_tile2);
+            }
+        }
+    }
+    for t in &path1 {
+        println!("{t:?}");
+    }
+    println!("--------------------------------");
+    for t in &path2 {
+        println!("{t:?}");
+    }
+    println!("RES: {}", path1.len());
+
+    // let result = day10_1(&d);
+    // println!("{result}");
 }
 
 #[cfg(test)]
@@ -357,27 +416,42 @@ mod tests {
 
     #[test]
     fn walk_test() {
-        let d = advent_of_code::Reader::read_file("./input/day10_loop.txt").unwrap();
+        let d = advent_of_code::Reader::read_file("./input/day10_1.txt").unwrap();
         let grid = d
             .iter()
             .map(|line| line.chars().collect::<Vec<char>>())
             .collect::<Vec<Vec<char>>>();
 
         let start_tile = Tile::find_start_tile(&grid);
+        println!("{start_tile:?}");
         let connections = start_tile.get_start_connections(&grid, &start_tile);
+        println!("{connections:?}");
+        assert_eq!(connections.len(), 2);
 
-        let mut path: Vec<Tile> = vec![start_tile, connections[1]];
+        let mut path1: Vec<Tile> = vec![start_tile, connections[0]];
+        let mut path2: Vec<Tile> = vec![start_tile, connections[1]];
 
         loop {
-            let next_tile = &path.iter().last().unwrap().get_next_tile(&grid).unwrap();
-            match next_tile.item {
-                'S' => break,
-                _ => path.push(*next_tile),
+            let next_tile1 = &path1.iter().last().unwrap().get_next_tile(&grid).unwrap();
+            println!("{next_tile1:?}");
+            let next_tile2 = &path2.iter().last().unwrap().get_next_tile(&grid).unwrap();
+            println!("{next_tile2:?}");
+            match next_tile1.position == next_tile2.position {
+                true => break,
+                false => {
+                    path1.push(*next_tile1);
+                    path2.push(*next_tile2);
+                }
             }
         }
-        for t in &path {
+        for t in &path1 {
             println!("{t:?}");
         }
+        println!("--------------------------------");
+        for t in &path2 {
+            println!("{t:?}");
+        }
+        println!("RES: {}", path1.len());
     }
     #[test]
     fn day10_test() {
