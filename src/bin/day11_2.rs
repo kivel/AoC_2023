@@ -184,7 +184,7 @@ mod tests {
     #[test]
     fn day11_final_data() {
         let d = advent_of_code::Reader::read_file("./input/day11_1.txt").unwrap();
-        let result = day11_2(&d, 2);
-        assert_eq!(result, 9177603);
+        let result = day11_2(&d, 1_000_000);
+        assert_eq!(result, 632003913611);
     }
 }
