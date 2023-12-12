@@ -18,7 +18,6 @@ fn day11_2(data: &Vec<String>, expand: usize) -> usize {
     galaxy_pairs
         .iter()
         .map(|pair| get_galaxy_distance(pair, &empty_space, expand))
-        // .map(|pair| pair.1.abs_diff(pair.3) + pair.0.abs_diff(pair.2))
         .collect::<Vec<usize>>()
         .iter()
         .sum::<usize>()
