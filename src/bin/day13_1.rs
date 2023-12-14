@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 #[path = "../advent_of_code/mod.rs"]
 mod advent_of_code;
 
@@ -30,8 +28,6 @@ fn day13_1(data: &str) -> usize {
 }
 
 fn find_mirror_plane(input: &Vec<Vec<char>>) -> Option<usize> {
-    let mut line_map: HashMap<Vec<char>, Vec<usize>> = HashMap::new();
-
     let idx = input
         .windows(2)
         .enumerate()
@@ -77,54 +73,6 @@ fn find_mirror_plane(input: &Vec<Vec<char>>) -> Option<usize> {
         return None;
     }
     Some(p)
-
-    // while left >= 0 && right < input.len() {
-    //     left -= 1;
-    //     right += 1;
-    //     if input[left] == input[right] {
-    //         continue;
-    //     }
-    // }
-
-    // input.iter().enumerate().for_each(|(i, line)| {
-    //     line_map
-    //         .entry(line.clone())
-    //         .and_modify(|counter| counter.push(i))
-    //         .or_insert(vec![i]);
-    // });
-    //
-    // // fails here if there are three identical lines, but ont is out of bounds
-    // let mut mirrored_lines = line_map
-    //     .iter()
-    //     .filter(|(_, v)| v.len() >= 2)
-    //     .flat_map(|(_, v)| v.clone())
-    //     .collect::<Vec<usize>>();
-    //
-    // // bail if no mirrored lines at all
-    // if mirrored_lines.len() == 0 {
-    //     return None;
-    // }
-    //
-    // mirrored_lines.sort();
-    // println!("mirrored lines: {mirrored_lines:?}");
-    // println!("{:?}", line_map);
-    //
-    // // bail if not all mirrored lines are consecutive
-    // if !mirrored_lines.windows(2).all(|w| w[0] == w[1] - 1) {
-    //     return None;
-    // }
-    //
-    // match mirrored_lines[0] == 0 || *mirrored_lines.iter().last().unwrap() == input.len() - 1 {
-    //     true => {
-    //         let lines_to_mirror = mirrored_lines[mirrored_lines.len() / 2];
-    //         println!("perfect mirror at {lines_to_mirror}");
-    //         println!("mirrored lines: {mirrored_lines:?}");
-    //         return Some(lines_to_mirror);
-    //     }
-    //     false => {
-    //         return None;
-    //     }
-    // }
 }
 fn main() {
     let d = include_str!("../../input/day13.txt");
