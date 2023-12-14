@@ -3,8 +3,9 @@ use std::io::BufRead;
 use std::path::Path;
 
 pub mod aoc {}
+#[allow(dead_code)]
 pub struct Reader {}
-
+#[allow(dead_code)]
 impl Reader {
     // Returns an Iterator to the Reader of the lines of the file.
     pub fn read_lines<P>(filename: P) -> std::io::Result<std::io::Lines<std::io::BufReader<File>>>
@@ -44,4 +45,19 @@ impl<T: Clone> RingBuffer<T> {
         self.current_index = (self.current_index + 1) % self.buffer.len();
         item
     }
+}
+
+#[allow(dead_code)]
+pub fn transpose(matrix: Vec<Vec<char>>) -> Vec<Vec<char>> {
+    let rows = matrix.len();
+    let cols = matrix[0].len();
+    let mut transposed_matrix: Vec<Vec<char>> = vec![vec!['.'; rows]; cols];
+
+    for i in 0..rows {
+        for j in 0..cols {
+            transposed_matrix[j][i] = matrix[i][j];
+        }
+    }
+
+    transposed_matrix
 }
