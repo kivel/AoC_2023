@@ -33,31 +33,28 @@ impl Lens {
 }
 
 fn day15_2(data: &str) -> usize {
-    let mut Boxes: HashMap<usize, Vec<Lens>> = HashMap::new();
+    let mut boxes: HashMap<usize, Vec<Lens>> = HashMap::new();
     // All 256 boxes are always present;
     for i in 0..256 {
-        Boxes.insert(i, vec![]);
+        boxes.insert(i, vec![]);
     }
-    let lenses = data
-        .split(',')
+    data.split(',')
         .map(|s| Lens::from_string(s))
-        .collect::<Vec<Lens>>();
-
-    lenses.iter().for_each(|lens| {
-        let key = hasher(lens.label.as_str());
-        Boxes.entry(key).and_modify(|x| {
-            if lens.f.is_ok() {
-                match find_lens_in_box(x, lens.label.as_str()) {
-                    None => x.push(lens.clone()),
-                    Some(i) => x[i] = lens.clone(),
+        .for_each(|lens| {
+            let key = hasher(lens.label.as_str());
+            boxes.entry(key).and_modify(|x| {
+                if lens.f.is_ok() {
+                    match find_lens_in_box(x, lens.label.as_str()) {
+                        None => x.push(lens.clone()),
+                        Some(i) => x[i] = lens.clone(),
+                    }
+                } else {
+                    x.retain(|l| l.label != lens.label);
                 }
-            } else {
-                x.retain(|l| l.label != lens.label);
-            }
+            });
         });
-    });
 
-    Boxes
+    boxes
         .iter()
         .filter(|(_, v)| !v.is_empty())
         .map(|(b, l)| {
@@ -95,7 +92,6 @@ fn find_lens_in_box(lenses: &Vec<Lens>, label: &str) -> Option<usize> {
 #[cfg(test)]
 mod tests {
     use crate::{day15_2, hasher, Lens};
-    use regex::Regex;
 
     #[test]
     fn sandbox() {
