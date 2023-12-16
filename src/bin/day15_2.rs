@@ -89,34 +89,18 @@ fn find_lens_in_box(lenses: &Vec<Lens>, label: &str) -> Option<usize> {
         .filter_map(|(i, l)| if l.label == label { Some(i) } else { None })
         .nth(0)
 }
+
 #[cfg(test)]
 mod tests {
-    use crate::{day15_2, hasher, Lens};
+    use crate::{day15_2, hasher};
 
-    #[test]
-    fn sandbox() {
-        let input = "rn=3";
-        let split: Vec<&str> = input.split(&['=', '-']).collect();
-        let label = split[0];
-        let f = split[1].parse::<usize>();
-        println!("{:?}", label);
-        println!("{:?}", f);
-        // let re = Regex::new(r"(\w*)?(=|-)(\d)?").unwrap();
-        // re.split()
-        // for mat in re.find_iter(input) {
-        //     println!("{:?}", mat);
-        // }
-        println! {"input: {} -> label: {} -> box: {}", input, label, hasher(label)};
-        let lens = Lens::from_string(input);
-        println! {"label: {}, f={:?}", lens.label, lens.f};
-        lens.show();
-    }
     #[test]
     fn test_hasher() {
         let input = "HASH";
         let hash = hasher(input);
         assert_eq!(hash, 52)
     }
+
     #[test]
     fn day15_2_test() {
         let d = include_str!("../../input/day15_test.txt");
@@ -130,6 +114,6 @@ mod tests {
         let d = include_str!("../../input/day15.txt");
         let result = day15_2(d);
         println!("{}", result);
-        assert_eq!(result, 506891);
+        assert_eq!(result, 230462);
     }
 }
