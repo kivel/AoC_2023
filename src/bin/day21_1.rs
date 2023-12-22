@@ -1,6 +1,4 @@
 use std::collections::{HashMap, HashSet};
-use std::os::macos::raw::stat;
-// use std::process::exit;
 
 #[path = "../advent_of_code/mod.rs"]
 mod advent_of_code;
@@ -28,6 +26,7 @@ fn get_neighbors(grid: &Vec<Vec<char>>, position: (usize, usize)) -> HashSet<(us
     result
 }
 
+#[allow(dead_code)]
 fn plot_map(grid: &Vec<Vec<char>>, start: &(usize, usize), visited: &HashSet<(usize, usize)>) {
     let mut map = grid.clone();
 
@@ -83,18 +82,6 @@ fn day21_1(data: &str, n_steps: usize) -> usize {
         steps = s;
     }
 
-    // println!("GOOD: {:?}", &good);
-
-    // let mut all: HashSet<(usize, usize)> = HashSet::new();
-    // for (i, plot) in good.iter().enumerate() {
-    //     println!("{i}: hashset {:?}", plot);
-    //     all.extend(plot.1);
-    // }
-
-    // println!("steps: {}", steps.len());
-
-    // plot_map(&grid, &start, &steps);
-
     return steps.len();
 }
 
@@ -121,6 +108,6 @@ mod tests {
         let d = include_str!("../../input/day21.txt");
         let result = day21_1(d, 64);
         println!("{}", result);
-        assert_eq!(result, 348378);
+        assert_eq!(result, 3572);
     }
 }
